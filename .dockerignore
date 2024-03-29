@@ -1,0 +1,7 @@
+venv
+dev_tools
+README.md
+.flake8
+.github
+.idea
+db.sqlite3
