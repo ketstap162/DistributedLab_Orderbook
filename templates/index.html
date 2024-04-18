@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} | Home{% endblock %}
+
+{% block content %}
+  <h1>Distributed Lab Trading</h1>
+  <p>Hello! The DL Trading is a trading service where you can exchange currency.</p>
+  <h3>NBU exchange rates to the {{ base_currency.name }}</h3>
+  {% if data %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Currency</th>
+        <th scope="col">Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for currency, rate in data.items %}
+        <tr>
+          <th scope="row">{{ currency }}</th>
+          <td>{{ rate }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    No info about currencies.
+  {% endif %}
+{% endblock %}

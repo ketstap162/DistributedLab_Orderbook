@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %} | Order{% endblock %}
+
+{% block content %}
+  <h3>Orderbook</h3>
+  <a href="{% url 'trading:order-create' %}" class="btn btn-secondary btn-sml" style="margin-bottom: 5px">+ New Order</a>
+
+  {% if orders %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Base</th>
+        <th scope="col">Quote</th>
+        <th scope="col">Rate</th>
+        <th scope="col">Rest</th>
+        <th scope="col">Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+          <tr>
+            <td>{{ order.wallet_from.currency }}</td>
+            <td>{{ order.wallet_to.currency }}</td>
+            <td>1.0 {{ order.wallet_from.currency.name }} = {{ order.display_price_reversed }} {{ order.wallet_to.currency.name }}</td>
+            <td>{{ order.display_deposit }}</td>
+            <td><a href="{% url 'trading:order-detail' pk=order.id %}" class="btn btn-secondary btn-sml">◉</a></td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No orders</p>
+  {% endif %}
+{% endblock %}

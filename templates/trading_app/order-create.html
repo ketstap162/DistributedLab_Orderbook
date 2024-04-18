@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} | Order{% endblock %}
+
+{% block content %}
+  <h1>Create order</h1>
+  {% include 'includes/form_errors.html' %}
+
+  <form method="post" action="{% url 'trading:order-create' %}">
+
+    {% csrf_token %}
+
+    <div id="div_id_wallet_from" class="control-group">
+        <label for="id_wallet_from" class="control-label requiredField">
+          Base wallet
+        </label>
+        <div class="controls">
+          {{ form.wallet_from }}
+        </div>
+    </div>
+
+    <div id="div_id_wallet_to" class="control-group">
+      <label for="id_wallet_to" class="control-label requiredField">
+        Quote wallet</label>
+      <div class="controls">
+        {{ form.wallet_to }}
+      </div>
+    </div>
+
+    <div id="div_id_amount" class="control-group">
+      <label for="id_amount" class="control-label requiredField">
+          Quote amount
+      </label>
+      <div class="controls">
+        {{ form.amount }}
+      </div>
+
+      <div id="div_id_price" class="control-group">
+        <label for="id_price" class="control-label requiredField">
+            Price for quote
+        </label>
+        <div class="controls">
+          {{ form.price }}
+        </div>
+      </div>
+
+      <div>
+        <label for="{{ form.price_option.id_for_label }}">Price option:</label><br>
+        {% for radio in form.price_option %}
+            {{ radio.tag }} {{ radio.choice_label }} <br>
+        {% endfor %}
+      </div>
+    </div>
+
+    <input type="submit" value="Create" class="btn btn-dark" />
+    <input type="hidden" name="next" value="{% url 'trading:order' %}" />
+    <a href="{% url 'trading:order' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

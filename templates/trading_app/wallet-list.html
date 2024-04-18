@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %} | Wallet{% endblock %}
+
+{% block content %}
+  <h3>My wallets</h3>
+  {% if wallets %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Wallet ID</th>
+        <th scope="col">Currency</th>
+        <th scope="col">Balance</th>
+        <th scope="col">Deposit</th>
+        <th scope="col">Withdraw</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for wallet in wallets %}
+        <tr>
+          <th scope="row">{{ wallet.id }}</th>
+          <td>{{ wallet.currency }}</td>
+          <td>{{ wallet.balance_display }}</td>
+          <td><a href="{% url 'trading:wallet-deposit' pk=wallet.pk %}" class="btn btn-secondary btn-sml">+</a></td>
+          <td><a href="{% url 'trading:wallet-withdraw' pk=wallet.pk %}" class="btn btn-secondary btn-sml">-</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    You haven't wallets
+  {% endif %}
+
+{% endblock %}
