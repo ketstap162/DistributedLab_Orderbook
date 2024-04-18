@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} | Order{% endblock %}
+
+{% block content %}
+  <h1>Order Details</h1>
+  {%if not order.is_active %}<p><i style="color: gray;">(deactivated)</i></p>{% endif %}
+  <p><b>Source wallet:</b> {{ order.wallet_from }}</p>
+
+  {% if owner %}
+    <p><b>Destination wallet:</b> {{ order.wallet_to }}</p>
+    <p><b>Total amount:</b> {{ order.display_amount }} {{ order.wallet_to.currency.name }}</p>
+    <p><b>Rest to buy:</b> {{ order.display_rest }} {{ order.wallet_to.currency.name }}</p>
+    <p><b>Deposit:</b> {{ order.display_deposit }} {{ order.wallet_from.currency.name }}</p>
+  {% else %}
+    <p><b>Rest:</b> {{ order.display_deposit }} {{ order.wallet_from.currency.name }}</p>
+  {% endif %}
+
+  <p><b>Rate:</b> {{ order.display_price_reversed }} {{ order.wallet_to.currency.name }}</p>
+
+  {% if owner %}
+    <a href="{% url 'trading:order-activate' pk=order.pk %}" class="btn btn-dark">
+      {% if order.is_active %}
+        Deactivate
+      {% else %}
+        Activate
+      {% endif %}
+    </a>
+  {% else %}
+
+    {% include 'includes/form_errors.html' %}
+
+    <form method="post" action="{% url 'trading:order-detail' pk=order.pk %}">
+
+      {% csrf_token %}
+
+      <div id="div_id_wallet_from" class="control-group">
+          <label for="id_wallet_from" class="control-label requiredField">
+            From wallet
+          </label>
+          <div class="controls">
+            {{ form.wallet_from }}
+          </div>
+      </div>
+
+      <div id="div_id_wallet_to" class="control-group">
+        <label for="id_wallet_to" class="control-label requiredField">
+          To wallet</label>
+        <div class="controls">
+          {{ form.wallet_to }}
+        </div>
+      </div>
+
+      <div id="div_id_amount" class="control-group">
+        <label for="id_amount" class="control-label requiredField">
+            Amount to buy ({{ order.wallet_from.currency.name }})
+        </label>
+        <div class="controls">
+          {{ form.amount }}
+        </div>
+      </div>
+
+      <input type="submit" value="Buy" class="btn btn-dark" />
+      <input type="hidden" name="next" value="{% url 'trading:order' %}" />
+      <a href="{% url 'trading:order' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  {% endif %}
+{% endblock %}
