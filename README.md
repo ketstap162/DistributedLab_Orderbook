@@ -1,5 +1,6 @@
 # DistributedLab_Orderbook
-The DL Trading is a trading service where you can exchange currency.
+The DL Trading is a trading service where you can exchange currency.  
+About `30` hours were spent on this project.
 
 ## Features
 - after user registration, wallets are automatically created for all possible currencies in the database (using signals);
